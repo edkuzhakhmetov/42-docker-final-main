@@ -1,11 +1,25 @@
-FROM golang:1.23.5
+FROM golang:1.23.5-alpine AS builder
 
-WORKDIR /usr/src/app
+WORKDIR /build
+
+RUN apk add --no-cache gcc musl-dev sqlite-dev
+
+COPY go.mod go.sum ./
+
+RUN go mod download
 
 COPY . .
 
-RUN go mod tidy
+RUN GOOS=linux go build -o main
 
-RUN apt-get update && apt-get install -y sqlite3
+FROM alpine:3.21.3
 
-RUN go run .
+RUN apk add --no-cache sqlite
+
+WORKDIR /app
+
+COPY --from=builder /build/main ./
+
+COPY tracker.db ./
+
+CMD ["./main"]
