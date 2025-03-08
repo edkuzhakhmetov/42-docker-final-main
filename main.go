@@ -3,7 +3,6 @@ package main
 import (
 	"database/sql"
 	"log"
-	"os"
 	"time"
 
 	_ "modernc.org/sqlite"
@@ -98,12 +97,12 @@ func (s ParcelService) Delete(number int) error {
 }
 
 func main() {
-	log.SetFlags(4)
-	file, err := os.OpenFile("app.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-	if err != nil {
-		log.Fatalf("failed to open log file: %v", err)
-	}
-	log.SetOutput(file)
+	log.SetFlags(3)
+	// file, err := os.OpenFile("app.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	// if err != nil {
+	// 	log.Fatalf("failed to open log file: %v", err)
+	// }
+	//log.SetOutput(file)
 
 	log.Println("server started")
 
